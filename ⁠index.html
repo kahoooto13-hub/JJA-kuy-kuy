@@ -1,0 +1,342 @@
+```html
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Four Houses</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --black: #100c14;
+      --purple: #24152f;
+      --purple-light: #382047;
+      --white: #fffdfb;
+      --gold: #d8bd7a;
+      --gold-light: #f0dfa9;
+      --muted: #c9becd;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--white);
+      background:
+        radial-gradient(ellipse at 50% 45%, rgba(76, 43, 94, 0.24), transparent 55%),
+        var(--black);
+      font-family: "Kanit", sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .topbar {
+      width: min(1120px, calc(100% - 48px));
+      margin: 0 auto;
+      min-height: 82px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+
+    .navigation {
+      display: flex;
+      align-items: center;
+      gap: clamp(24px, 5vw, 58px);
+    }
+
+    .navigation a {
+      position: relative;
+      padding: 8px 0;
+      color: var(--white);
+      font-size: 1rem;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      transition: color 180ms ease;
+    }
+
+    .navigation a::after {
+      position: absolute;
+      right: 0;
+      bottom: 1px;
+      left: 0;
+      height: 1px;
+      background: var(--gold);
+      content: "";
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 180ms ease;
+    }
+
+    .navigation a:hover,
+    .navigation a:focus-visible {
+      color: var(--gold-light);
+    }
+
+    .navigation a:hover::after,
+    .navigation a:focus-visible::after {
+      transform: scaleX(1);
+      transform-origin: left;
+    }
+
+    main {
+      width: min(1120px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 10px 0 80px;
+    }
+
+    /* พื้นที่ว่างสำหรับใส่ภาพภายหลัง */
+    .image-space {
+      position: relative;
+      min-height: clamp(250px, 35vw, 430px);
+      overflow: hidden;
+      border: 1px solid rgba(216, 189, 122, 0.25);
+      border-radius: 28px;
+      background:
+        radial-gradient(ellipse at 50% 100%, rgba(102, 61, 125, 0.38), transparent 60%),
+        linear-gradient(135deg, #1a1121, #21142b 55%, #120d17);
+      box-shadow: 0 24px 70px rgba(0, 0, 0, 0.28);
+    }
+
+    .image-space::before,
+    .image-space::after {
+      position: absolute;
+      content: "";
+      pointer-events: none;
+    }
+
+    .image-space::before {
+      width: 340px;
+      height: 340px;
+      top: -220px;
+      right: -80px;
+      border: 1px solid rgba(240, 223, 169, 0.14);
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 28px rgba(240, 223, 169, 0.025),
+        0 0 0 58px rgba(240, 223, 169, 0.02);
+    }
+
+    .image-space::after {
+      width: 240px;
+      height: 240px;
+      bottom: -180px;
+      left: -70px;
+      border: 1px solid rgba(216, 189, 122, 0.12);
+      border-radius: 50%;
+    }
+
+    .houses-section {
+      padding-top: clamp(42px, 7vw, 72px);
+    }
+
+    .section-heading {
+      margin: 0 0 28px;
+      color: var(--white);
+      font-size: clamp(1.3rem, 2.4vw, 1.8rem);
+      font-weight: 400;
+      text-align: center;
+      letter-spacing: 0.03em;
+    }
+
+    .section-heading::after {
+      display: block;
+      width: 48px;
+      height: 2px;
+      margin: 12px auto 0;
+      background: var(--gold);
+      content: "";
+    }
+
+    .house-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 20px;
+    }
+
+    .house-card {
+      position: relative;
+      min-height: 220px;
+      padding: 28px 18px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      border: 1px solid var(--gold);
+      border-radius: 18px;
+      background:
+        linear-gradient(145deg, rgba(255, 255, 255, 0.035), transparent 50%),
+        linear-gradient(160deg, var(--purple-light), var(--purple) 70%);
+      color: var(--white);
+      text-align: center;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.18);
+      transition:
+        transform 220ms ease,
+        border-color 220ms ease,
+        box-shadow 220ms ease,
+        background-color 220ms ease;
+    }
+
+    .house-card::before {
+      position: absolute;
+      top: -52px;
+      right: -48px;
+      width: 130px;
+      height: 130px;
+      border: 1px solid rgba(240, 223, 169, 0.14);
+      border-radius: 50%;
+      content: "";
+      transition: transform 220ms ease;
+    }
+
+    .house-card:hover,
+    .house-card:focus-visible {
+      z-index: 1;
+      border-color: var(--gold-light);
+      box-shadow: 0 18px 42px rgba(0, 0, 0, 0.32), 0 0 24px rgba(216, 189, 122, 0.12);
+      transform: translateY(-6px);
+    }
+
+    .house-card:hover::before,
+    .house-card:focus-visible::before {
+      transform: scale(1.18);
+    }
+
+    .house-number {
+      margin-bottom: 14px;
+      color: var(--gold-light);
+      font-size: 0.8rem;
+      font-weight: 300;
+      letter-spacing: 0.22em;
+    }
+
+    .house-name {
+      margin: 0;
+      font-size: clamp(1.05rem, 1.7vw, 1.35rem);
+      font-weight: 500;
+      line-height: 1.4;
+    }
+
+    .house-mark {
+      width: 28px;
+      height: 28px;
+      margin-bottom: 16px;
+      border: 1px solid var(--gold);
+      transform: rotate(45deg);
+    }
+
+    @media (max-width: 800px) {
+      .house-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .house-card {
+        min-height: 190px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .topbar,
+      main {
+        width: min(100% - 32px, 1120px);
+      }
+
+      .topbar {
+        min-height: 72px;
+        justify-content: center;
+      }
+
+      .navigation {
+        gap: 26px;
+      }
+
+      .navigation a {
+        font-size: 0.92rem;
+      }
+
+      .image-space {
+        min-height: 250px;
+        border-radius: 20px;
+      }
+
+      .house-grid {
+        gap: 12px;
+      }
+
+      .house-card {
+        min-height: 170px;
+        padding: 20px 10px;
+        border-radius: 14px;
+      }
+
+      .house-name {
+        font-size: 1rem;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="topbar">
+    <nav class="navigation" aria-label="เมนูหลัก">
+      <a href="rules.html">กฎ</a>
+      <a href="apply.html">สมัครเรียน</a>
+      <a href="council.html">สภา</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="image-space" aria-label="พื้นที่สำหรับใส่ภาพ"></section>
+
+    <section class="houses-section" aria-labelledby="houses-title">
+      <h1 class="section-heading" id="houses-title">เลือก House ของคุณ</h1>
+
+      <div class="house-grid">
+        <a class="house-card" href="house-of-sapphire.html">
+          <span class="house-number">01</span>
+          <span class="house-mark" aria-hidden="true"></span>
+          <h2 class="house-name">House of Sapphire</h2>
+        </a>
+
+        <a class="house-card" href="house-of-ruby.html">
+          <span class="house-number">02</span>
+          <span class="house-mark" aria-hidden="true"></span>
+          <h2 class="house-name">House of Ruby</h2>
+        </a>
+
+        <a class="house-card" href="house-of-diamond.html">
+          <span class="house-number">03</span>
+          <span class="house-mark" aria-hidden="true"></span>
+          <h2 class="house-name">House of Diamond</h2>
+        </a>
+
+        <a class="house-card" href="house-of-emerald.html">
+          <span class="house-number">04</span>
+          <span class="house-mark" aria-hidden="true"></span>
+          <h2 class="house-name">House of Emerald</h2>
+        </a>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
